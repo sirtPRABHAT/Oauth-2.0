@@ -12,13 +12,15 @@ passport.use(
         clientSecret: process.env.CLIENT_SECRET,
         callbackURL: '/auth/google/redirect'
     }, (accessToken, refreshToken, profile, done) => {
+        console.log(profile.emails[0].value) 
         User.findOne({Google_Id: profile.id}).then((currentUser)=>{
           if(currentUser){
             done(null, currentUser);
           } else{
               new User({
                 Google_Id: profile.id,
-                name: profile.name.givenName
+                name: `${profile.name.givenName} ${profile.name.familyName}` ,
+                email:profile.emails[0].value,
               }).save().then((newUser) =>{
                 done(null, newUser);
               });
@@ -38,7 +40,7 @@ passport.use(
     });
   });
 
-
+ 
 
 const app = express();
 const Router = express.Router();
