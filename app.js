@@ -12,7 +12,7 @@ passport.use(
         clientSecret: process.env.CLIENT_SECRET,
         callbackURL: '/auth/google/redirect'
     }, (accessToken, refreshToken, profile, done) => {
-        console.log(profile.emails[0].value) 
+        console.log(profile) 
         User.findOne({Google_Id: profile.id}).then((currentUser)=>{
           if(currentUser){
             done(null, currentUser);
@@ -76,6 +76,15 @@ app.get('/auth/google/redirect',passport.authenticate('google'),(req,res)=>{
     })
 // res.send(req.user);
 });
+
+app.all('*', (req, res, next) => {
+    next(
+      new AppError(
+        `Request ${req.originalUrl} does not found on this server`,
+        404
+      )
+    );
+  });
 
 
  module.exports = app
