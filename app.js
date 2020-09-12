@@ -58,18 +58,23 @@ app.use(cookieSession({
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-app.get("/auth/google", passport.authenticate("google", {
-    scope: ["profile", "email"]
+app.get('/', (req,res)=>{
+    res.status(200).render('home')
+
+})
+
+app.get('/auth/google', passport.authenticate('google', {
+    scope: ['profile', "email"]
   }));
 
 
-app.get("/auth/google/redirect",passport.authenticate("google"),(req,res)=>{
-res.send(req.user);
-
+app.get('/auth/google/redirect',passport.authenticate('google'),(req,res)=>{
+    res.status(200).render('secret_page',{
+        user: req.user
+    })
+// res.send(req.user);
 });
 
 
  module.exports = app
 
-// console.log(process.env.CLIENT_ID) 
-// console.log("hello") 

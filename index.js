@@ -21,12 +21,12 @@ const db = process.env.HOSTED_DATABASE_CONNECTION_STRING.replace(
       useFindAndModify: false,
       useUnifiedTopology: true,
     })
-    .then((con) => {
+    .then((con) => { 
       console.log('Database is connected');
     });
   
 
-    
+     
 const server = http.createServer(app);
  
 
